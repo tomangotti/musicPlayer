@@ -11,6 +11,9 @@ import { RadioGroup } from "@material-ui/core";
 import { FormControlLabel } from "@material-ui/core";
 
 
+
+
+
 export default class CreateRoomPage extends Component {
     defaultVotes = 2;
 
@@ -50,7 +53,10 @@ export default class CreateRoomPage extends Component {
         }
         fetch('/api/create_room', requestOptions)
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                console.log(data.code)
+                this.props.navigate(`/room/${data.code}`);
+            })
     }
 
     render() {
@@ -98,3 +104,4 @@ export default class CreateRoomPage extends Component {
             </Grid>)
     }
 }
+
