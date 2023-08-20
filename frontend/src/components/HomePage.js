@@ -24,7 +24,7 @@ export default class HomePage extends Component {
             <Router>
                 <Routes>
                     <Route exact path="/" element={<h1>Hi</h1>}></Route> 
-                    <Route path="/join" element={<RoomJoinPAge />} />
+                    <Route path="/join" element={<RoomJoinPageWrapper />} />
                     <Route path="/create" element={<CreateRoomWrapper />} />
                     <Route path="/room/:code" element={<RoomWrapper />} />
                 </Routes>
@@ -41,4 +41,9 @@ function RoomWrapper() {
 function CreateRoomWrapper(){
     const navigate = useNavigate();
     return <CreateRoomPage navigate={navigate} />
+}
+
+function RoomJoinPageWrapper(){
+    const navigate = useNavigate();
+    return <RoomJoinPAge navigate={navigate} />
 }
