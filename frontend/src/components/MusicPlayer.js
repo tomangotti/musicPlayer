@@ -6,6 +6,30 @@ import {PlayArrow, SkipNext, Pause} from "@material-ui/icons"
 
 export default function MusicPlayer({song}){
     const songProgress = (song.time / song.duration) * 100;
+
+    function handlePlayPauseButton() {
+        song.is_playing ? pauseSong() : playSong()
+    }
+
+    function handleSkipButton() {
+        
+    }
+
+    function pauseSong() {
+        const putObject = {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"}
+        }
+        fetch('/spotify/pause', putObject)
+    }
+
+    function playSong() {
+        const putObject = {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"}
+        }
+        fetch('/spotify/play', putObject)
+    }
     
     return(
         <Card>
@@ -21,10 +45,10 @@ export default function MusicPlayer({song}){
                         {song.artist}
                     </Typography>
                     <div>
-                        <IconButton>
+                        <IconButton onClick={handlePlayPauseButton}>
                             {song.is_playing ? <Pause /> : <PlayArrow />}
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={handleSkipButton}>
                             <SkipNext />
                         </IconButton>
                     </div>

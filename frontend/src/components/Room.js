@@ -72,7 +72,6 @@ export default function Room() {
                 if(res.ok) {
                     res.json().then((data) => {
                         setSong(data)
-                        console.log(data)
                     })
                 }else{
                     return {};
