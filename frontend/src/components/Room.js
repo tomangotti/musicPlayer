@@ -18,6 +18,7 @@ export default function Room() {
     const [guestCanPause, setGuestCanPause] = useState(false);
     const [isHost, setIsHost] = useState(false);
     const [showSetting, setShowSetting] = useState(false);
+    const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
 
     const [votesToSkipEdit, setVotesToSkipEdit] = useState(2);
     const [guestCanPauseEdit, setGuestCanPauseEdit] = useState(false);
@@ -33,12 +34,31 @@ export default function Room() {
                         setVotesToSkip(data.votes_so_skip)
                         setGuestCanPause(data.guest_can_pause)
                         setIsHost(data.is_host)
+
+                        if(data.is_host) {
+                            authenticateSpotify()
+                        }
                     })
                 }else{
                     navigate("/")
                 }
             });  
     },[]);
+
+    function authenticateSpotify() {
+        fetch('/spotify/is-authenticated')
+            .then((res) => res.json())
+            .then((data) => {
+                setSpotifyAuthenticated(data.status)
+                if(!data.status) {
+                    fetch('/spotify/get-auth-url')
+                        .then((res) => res.json())
+                        .then((data) => {
+                            window.location.replace(data.url);
+                        })
+                }
+            })
+    }
 
     function leaveButtonPressed() {
         const requestOptions = {
