@@ -97,7 +97,7 @@ class LeaveRoom(APIView):
             if len(room_results) > 0:
                 room = room_results[0]
                 room.delete()
-        
+
         return Response({'Message': 'Success'}, status=status.HTTP_200_OK)
     
 

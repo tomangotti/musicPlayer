@@ -10,6 +10,7 @@ import {Grid,
         FormControlLabel,
         TextField,
         Divider} from '@material-ui/core';
+import MusicPlayer from './MusicPlayer';
 
 
 
@@ -19,6 +20,7 @@ export default function Room() {
     const [isHost, setIsHost] = useState(false);
     const [showSetting, setShowSetting] = useState(false);
     const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+    const [song, setSong] = useState({})
 
     const [votesToSkipEdit, setVotesToSkipEdit] = useState(2);
     const [guestCanPauseEdit, setGuestCanPauseEdit] = useState(false);
@@ -42,13 +44,16 @@ export default function Room() {
                 }else{
                     navigate("/")
                 }
+                const interval = setInterval(() => {getCurrentSong()}, [1000])
             });  
     },[]);
+    
 
     function authenticateSpotify() {
         fetch('/spotify/is-authenticated')
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 setSpotifyAuthenticated(data.status)
                 if(!data.status) {
                     fetch('/spotify/get-auth-url')
@@ -57,13 +62,29 @@ export default function Room() {
                             window.location.replace(data.url);
                         })
                 }
+                
             })
     }
+
+    function getCurrentSong() {
+        fetch('/spotify/current-song')
+            .then((res) => {
+                if(res.ok) {
+                    res.json().then((data) => {
+                        setSong(data)
+                        console.log(data)
+                    })
+                }else{
+                    return {};
+                }
+            })
+    }
+
 
     function leaveButtonPressed() {
         const requestOptions = {
             method: "POST",
-            headers: {'Content-Type': 'application/json'},
+            headers: {"Content-Type": "application/json" },
         }
         fetch('/api/leave-room', requestOptions)
             .then((_res) => {
@@ -167,21 +188,8 @@ export default function Room() {
                     Code: {code}
                 </Typography>
             </Grid>
-            <Grid item xs={12} align='center'>
-                <Typography variant='h6' component="h6">
-                    Votes: {votesToSkip}
-                </Typography>
-            </Grid>
-            <Grid item xs={12} align='center'>
-                <Typography variant='h6' component="h6">
-                    Guest can Pause: {guestCanPause ? "Yes" : "No"}
-                </Typography>
-            </Grid>
-            <Grid item xs={12} align='center'>
-                <Typography variant='h6' component="h6">
-                    Host: {isHost.toString()}
-                </Typography>
-            </Grid>
+            
+            {song ? <MusicPlayer song={song} /> : null}
             
             {isHost ? <Grid item xs={12} align='center'>
                 <Button color='primary' variant='contained' onClick={settingsButtonPressed}>
