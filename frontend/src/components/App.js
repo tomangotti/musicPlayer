@@ -1,6 +1,15 @@
 import React, {Component} from "react";
 import { render } from "react-dom";
 import HomePage from "./HomePage";
+import RoomJoinPAge from "./RoomJoinPage";
+import CreateRoomPage from "./CreateRoomPage";
+import Room from "./Room";
+import {
+    BrowserRouter as Router, 
+    Routes, 
+    Route
+    } from "react-router-dom";
+
 
 
 export default class App extends Component {
@@ -11,7 +20,14 @@ export default class App extends Component {
     render() {
         return (
             <div className="center" >
-                <HomePage />
+                <Router>
+                    <Routes>
+                        <Route exact path="/" element={<HomePage />} />
+                        <Route path="/join" element={<RoomJoinPAge />} />
+                        <Route path="/create" element={<CreateRoomPage />} />
+                        <Route path="/room/:code" element={<Room/>} />
+                    </Routes>
+                </Router>
             </div>);
     }
 }
