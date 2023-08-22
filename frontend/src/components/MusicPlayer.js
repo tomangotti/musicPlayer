@@ -11,8 +11,12 @@ export default function MusicPlayer({song}){
         song.is_playing ? pauseSong() : playSong()
     }
 
-    function handleSkipButton() {
-        
+    function skipSong() {
+        const putObject = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        }
+        fetch('/spotify/skip', putObject)
     }
 
     function pauseSong() {
@@ -41,15 +45,15 @@ export default function MusicPlayer({song}){
                     <Typography component="h5" variant="h5">
                         {song.title}
                     </Typography>
-                    <Typography color="textSecondary" component="h5" variant="h5">
+                    <Typography color="textSecondary" variant="subtitle1">
                         {song.artist}
                     </Typography>
                     <div>
                         <IconButton onClick={handlePlayPauseButton}>
                             {song.is_playing ? <Pause /> : <PlayArrow />}
                         </IconButton>
-                        <IconButton onClick={handleSkipButton}>
-                            <SkipNext />
+                        <IconButton onClick={skipSong}>
+                            ({song.votes} / {song.votes_required}) <SkipNext />
                         </IconButton>
                     </div>
                 </Grid>
