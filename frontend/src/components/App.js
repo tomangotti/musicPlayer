@@ -11,28 +11,6 @@ import {
     } from "react-router-dom";
 
 
-
-// export default class App extends Component {
-//     constructor(props) {
-//         super(props);
-//     }
-
-//     render() {
-//         return (
-//             <div className="center" >
-//                 <Router>
-//                     <Routes>
-//                         <Route exact path="/" element={<HomePage />} />
-//                         <Route path="/join" element={<RoomJoinPAge />} />
-//                         <Route path="/create" element={<CreateRoomPage />} />
-//                         <Route path="/room/:code" element={<Room/>} />
-//                     </Routes>
-//                 </Router>
-//             </div>);
-//     }
-// }
-
-
 export default function App() {
     return (
         <div className="center" >

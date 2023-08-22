@@ -175,11 +175,6 @@ export default function Room() {
             </Grid>
             {showSetting ? renderSetting() : null}
         </Grid>
-        // <div>
-        //     <h3>{code}</h3>
-        //     <p>Votes: {votesToSkip}</p>
-        //     <p>Guest can pause: {guestCanPause.toString()}</p>
-        //     <p>Host: {isHost.toString()}</p>
-        // </div>
+        
     )
 }
