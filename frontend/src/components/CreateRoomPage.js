@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import  Grid  from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -137,17 +137,16 @@ export default function CreateRoomPage(){
     return(
         <Grid container spacing={1}>
                 <Grid item xs={12} align="center">
-                    <Typography Component='h4' variant='h4'>
+                    <Typography component='h4' variant='h4'>
                         Create A room
                     </Typography>
                 </Grid>
                 <Grid item xs={12} align="center">
                     <FormControl component="fieldset" >
                         <FormHelperText>
-                            <div align="center">
                                 Guest Control of Playback state
-                            </div>
                         </FormHelperText>
+                        
                         <RadioGroup row defaultValue='true' onChange={handleGuestCanPauseChange}>
                             <FormControlLabel value="true" control={<Radio color="primary" />} label="Play/Pause" labelPlacement="bottom"/>
                             <FormControlLabel value="false" control={<Radio color="secondary" />} label="No control" labelPlacement="bottom"/>
@@ -163,9 +162,7 @@ export default function CreateRoomPage(){
                                     textAlign: "center"
                                     }}} />
                         <FormHelperText>
-                            <div align="center">
                                 Votes Required To Skip Song
-                            </div>
                         </FormHelperText>
                     </FormControl>
                 </Grid>

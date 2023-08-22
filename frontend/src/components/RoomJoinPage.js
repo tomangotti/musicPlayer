@@ -75,7 +75,8 @@ import {Link, useNavigate} from "react-router-dom"
 
 export default function RoomJoinPAge() {
     const [roomCode, setRoomCode] = useState("")
-    const [error, setError] = useState("")
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
     const navigate = useNavigate()
 
     function handleTextFieldChange(e) {
@@ -95,7 +96,8 @@ export default function RoomJoinPAge() {
             if(res.ok){
                 navigate(`/room/${roomCode}`)
             } else {
-                setError("Room Not Found")
+                setError(true)
+                setErrorMessage('Room Not Found')
             }
         }).catch((error) => {
             console.log(error)
@@ -115,7 +117,7 @@ export default function RoomJoinPAge() {
                         label="Code" 
                         placeholder="Enter a Room Code" 
                         value={roomCode} 
-                        helperTest={error} 
+                        helperText={errorMessage} 
                         variant="outlined" 
                         onChange={handleTextFieldChange} />
                 </Grid>

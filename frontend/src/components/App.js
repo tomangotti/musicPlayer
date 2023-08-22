@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import { render } from "react-dom";
 import HomePage from "./HomePage";
 import RoomJoinPAge from "./RoomJoinPage";
@@ -12,24 +12,39 @@ import {
 
 
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+// export default class App extends Component {
+//     constructor(props) {
+//         super(props);
+//     }
 
-    render() {
-        return (
-            <div className="center" >
-                <Router>
-                    <Routes>
-                        <Route exact path="/" element={<HomePage />} />
-                        <Route path="/join" element={<RoomJoinPAge />} />
-                        <Route path="/create" element={<CreateRoomPage />} />
-                        <Route path="/room/:code" element={<Room/>} />
-                    </Routes>
-                </Router>
-            </div>);
-    }
+//     render() {
+//         return (
+//             <div className="center" >
+//                 <Router>
+//                     <Routes>
+//                         <Route exact path="/" element={<HomePage />} />
+//                         <Route path="/join" element={<RoomJoinPAge />} />
+//                         <Route path="/create" element={<CreateRoomPage />} />
+//                         <Route path="/room/:code" element={<Room/>} />
+//                     </Routes>
+//                 </Router>
+//             </div>);
+//     }
+// }
+
+
+export default function App() {
+    return (
+        <div className="center" >
+            <Router>
+                <Routes>
+                    <Route exact path="/" element={<HomePage />} />
+                    <Route path="/join" element={<RoomJoinPAge />} />
+                    <Route path="/create" element={<CreateRoomPage />} />
+                    <Route path="/room/:code" element={<Room/>} />
+                </Routes>
+            </Router>
+        </div>);
 }
 
 
