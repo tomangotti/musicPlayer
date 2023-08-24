@@ -14,7 +14,8 @@ import MusicPlayer from './MusicPlayer';
 
 
 
-export default function Room() {
+export default function Room({handleBackGroundImage}) {
+    
     const [votesToSkip, setVotesToSkip] = useState(2);
     const [guestCanPause, setGuestCanPause] = useState(false);
     const [isHost, setIsHost] = useState(false);
@@ -27,6 +28,8 @@ export default function Room() {
     
     const navigate = useNavigate();
     const { code } = useParams();
+
+    
 
     useEffect(() => {
         fetch('/api/get-room' + '?code=' + code)
@@ -46,6 +49,8 @@ export default function Room() {
                 }
                 const interval = setInterval(() => {getCurrentSong()}, [1000])
             });  
+        
+        
     },[]);
     
 
@@ -71,7 +76,9 @@ export default function Room() {
             .then((res) => {
                 if(res.ok) {
                     res.json().then((data) => {
+                        console.log(data)
                         setSong(data)
+                        handleBackGroundImage(data.image_url)
                     })
                 }else{
                     return {};
@@ -179,6 +186,9 @@ export default function Room() {
             </Grid>
         </Grid>)
     }
+
+
+    
 
     return(
         <Grid container spacing={1}>
