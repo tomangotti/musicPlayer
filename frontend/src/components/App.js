@@ -12,22 +12,28 @@ import {
 
 
 export default function App() {
-    const [background, setBackground] = useState("")
+    
+    
 
-    function handleBackGroundImage(url) {
-        console.log(url)
-        setBackground(url)
+    function handleBackgroundImage(url){
+        const body = document.getElementById("body")
+        body.style.backgroundImage = `url('${url}')`
+        
     }
+    
+    
+        
+    
 
 
     return (
-        <div className="center" style={{backgroundImage: `url(${background})`}}>
+        <div className="center">
             <Router>
                 <Routes>
                     <Route exact path="/" element={<HomePage />} />
                     <Route path="/join" element={<RoomJoinPAge />} />
                     <Route path="/create" element={<CreateRoomPage />} />
-                    <Route path="/room/:code" element={<Room handleBackGroundImage={handleBackGroundImage}/>} />
+                    <Route path="/room/:code" element={<Room  handleBackgroundImage={handleBackgroundImage} />} />
                 </Routes>
             </Router>
         </div>);

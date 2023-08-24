@@ -36,12 +36,13 @@ export default function MusicPlayer({song}){
     }
     
     return(
-        <Card>
-            <Grid container spacing={1}>
-                <Grid item align="center" xs={4}>
+        
+        <Card align="center" style={{width: "100%"}}>
+            <Grid container spacing={1} >
+                {/* <Grid item align="center" xs={4}>
                     <img src={song.image_url} height="100%" width="100%" />
-                </Grid>
-                <Grid item align="center" xs={8}>
+                </Grid> */}
+                <Grid item align="center" xs={12}>
                     <Typography component="h5" variant="h5">
                         {song.title}
                     </Typography>
@@ -62,5 +63,6 @@ export default function MusicPlayer({song}){
 
             
         </Card>
+        
     )
 }

@@ -14,7 +14,9 @@ import MusicPlayer from './MusicPlayer';
 
 
 
-export default function Room({handleBackGroundImage}) {
+
+
+export default function Room({ handleBackgroundImage }) {
     
     const [votesToSkip, setVotesToSkip] = useState(2);
     const [guestCanPause, setGuestCanPause] = useState(false);
@@ -76,9 +78,9 @@ export default function Room({handleBackGroundImage}) {
             .then((res) => {
                 if(res.ok) {
                     res.json().then((data) => {
-                        console.log(data)
+                        
                         setSong(data)
-                        handleBackGroundImage(data.image_url)
+                        handleBackgroundImage(data.image_url)
                     })
                 }else{
                     return {};
@@ -94,6 +96,7 @@ export default function Room({handleBackGroundImage}) {
         }
         fetch('/api/leave-room', requestOptions)
             .then((_res) => {
+                handleBackgroundImage("")
                 navigate("/")
             })
     };
@@ -187,15 +190,30 @@ export default function Room({handleBackGroundImage}) {
         </Grid>)
     }
 
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                title: 'My DJ Room',
+                text: 'Check out this link!',
+                url: 'http://127.0.0.1:8000/room/' + code, 
+                });
+            } catch (error) {
+                    console.error('Error sharing:', error);
+                }   
+        }
+        };
 
     
 
     return(
-        <Grid container spacing={1}>
+        <Grid container spacing={1} style={{
+                                            backgroundColor: 'white',
+                                            borderRadius: "5px"}}>
             <Grid item xs={12} align='center'>
-                <Typography variant='h4' component="h4">
-                    Code: {code}
-                </Typography>
+                <Button color='primary' variant='contained' onClick={handleShare}>
+                    Share Code: {code}
+                </Button>
             </Grid>
             
             {song ? <MusicPlayer song={song} /> : null}
@@ -210,6 +228,7 @@ export default function Room({handleBackGroundImage}) {
                     Leave Room
                 </Button>
             </Grid>
+            
             {showSetting ? renderSetting() : null}
         </Grid>
         
