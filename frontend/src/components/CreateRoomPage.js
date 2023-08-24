@@ -14,6 +14,7 @@ import { FormControlLabel } from "@material-ui/core";
 export default function CreateRoomPage(){
     const [guestCanPause, setGuestCanPause] = useState(true);
     const [votesToSkip, setVotesToSkip] = useState(2)
+    const [guestCanAddToQue, setGuestCanAddToQue] = useState(false);
     const navigate = useNavigate()
 
     function handleVotesChange(e) {
@@ -24,6 +25,10 @@ export default function CreateRoomPage(){
         setGuestCanPause(e.target.value === "true" ? true : false)
     }
 
+    function handleGuestCanAddToQueChange(e) {
+        setGuestCanAddToQue(e.target.value === "true" ? true : false)
+    }
+
     function handleRoomButtonPressed() {
         const requestOptions = {
             method: "POST",
@@ -31,6 +36,7 @@ export default function CreateRoomPage(){
             body: JSON.stringify({
                 votes_so_skip: votesToSkip,
                 guest_can_pause: guestCanPause,
+                guest_can_add_to_que: guestCanAddToQue
             })
         }
         fetch('/api/create_room', requestOptions)
@@ -56,6 +62,18 @@ export default function CreateRoomPage(){
                         <RadioGroup row defaultValue='true' onChange={handleGuestCanPauseChange}>
                             <FormControlLabel value="true" control={<Radio color="primary" />} label="Play/Pause" labelPlacement="bottom"/>
                             <FormControlLabel value="false" control={<Radio color="secondary" />} label="No control" labelPlacement="bottom"/>
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <FormControl component="fieldset" >
+                        <FormHelperText>
+                                Guest Can Add to Que
+                        </FormHelperText>
+                        
+                        <RadioGroup row defaultValue='true' onChange={handleGuestCanAddToQueChange}>
+                            <FormControlLabel value="true" control={<Radio color="primary" />} label="Yes" labelPlacement="bottom"/>
+                            <FormControlLabel value="false" control={<Radio color="secondary" />} label="No" labelPlacement="bottom"/>
                         </RadioGroup>
                     </FormControl>
                 </Grid>

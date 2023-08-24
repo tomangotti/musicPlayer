@@ -14,6 +14,9 @@ def get_user_tokens(session_id):
     else:
         return None
 
+
+
+
 def update_or_create_user_tokens(session_id, access_token, token_type, expires_in, refresh_token):
     tokens = get_user_tokens(session_id)
     expires_in = timezone.now() + timedelta(seconds=expires_in)
@@ -28,6 +31,9 @@ def update_or_create_user_tokens(session_id, access_token, token_type, expires_i
         tokens = SpotifyToken(user=session_id, access_token=access_token, refresh_token=refresh_token, token_type=token_type, expires_in=expires_in)
         tokens.save()
 
+
+
+
 def is_spotify_authenticated(session_id):
     tokens = get_user_tokens(session_id)
     
@@ -38,6 +44,8 @@ def is_spotify_authenticated(session_id):
         return True
 
     return False
+
+
 
 
 def refresh_spotify_token(session_id):
@@ -59,6 +67,8 @@ def refresh_spotify_token(session_id):
     update_or_create_user_tokens(session_id, access_token, token_type, expires_in, refresh_token)
 
 
+
+
 def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
     tokens = get_user_tokens(session_id)
     headers = {'Content-Type': 'application/json', 'Authorization': "Bearer " + tokens.access_token}
@@ -77,6 +87,8 @@ def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
         return {'Error': 'Issue with request'}
     
 
+
+
 def play_song(session_id):
     return execute_spotify_api_request(session_id, "player/play", put_=True)
 
@@ -85,3 +97,26 @@ def pause_song(session_id):
 
 def skip_song(session_id):
     return execute_spotify_api_request(session_id, "player/next", post_=True)
+
+
+
+
+def search_song(access_token, song_name):
+        url = f"https://api.spotify.com/v1/search"
+        headers = {
+            "Authorization": f"Bearer {access_token}"
+        }
+        params = {
+            "q": song_name,
+            "type": "track",
+            "limit": 1
+        }
+        response = get(url, headers=headers, params=params)
+        data = response.json()
+        if data["tracks"]["items"]:
+            track = data["tracks"]["items"][0]
+            track_name = track["name"]
+            artist_name = track["artists"][0]["name"]
+            print(f"Song: {track_name}\nArtist: {artist_name}")
+        else:
+            print("Song not found.")
