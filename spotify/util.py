@@ -101,22 +101,37 @@ def skip_song(session_id):
 
 
 
-def search_song(access_token, song_name):
-        url = f"https://api.spotify.com/v1/search"
+def search_song(session_id, song_name, limit=10):
+        tokens = get_user_tokens(session_id)
+        url = "https://api.spotify.com/v1/search"
         headers = {
-            "Authorization": f"Bearer {access_token}"
+            "Authorization": "Bearer " + tokens.access_token
         }
         params = {
             "q": song_name,
             "type": "track",
-            "limit": 1
+            "limit": limit
         }
         response = get(url, headers=headers, params=params)
         data = response.json()
+
+        tracks = [];
+        
         if data["tracks"]["items"]:
-            track = data["tracks"]["items"][0]
-            track_name = track["name"]
-            artist_name = track["artists"][0]["name"]
-            print(f"Song: {track_name}\nArtist: {artist_name}")
+            for track in data["tracks"]["items"]:
+                
+                track_name = track["name"]
+                artist_name = track["artists"][0]["name"]
+                uri = track["uri"]
+                image_url = track["album"]["images"][0]["url"]
+                tracks.append({
+                    'track_name': track_name,
+                    'artist_name': artist_name,
+                    'image_url': image_url,
+                    'uri': uri
+                })
+                print(f"Song: {track_name}\nArtist: {artist_name}\nURI: {uri}\n")
+            return tracks
+    
         else:
-            print("Song not found.")
+            print("No songs found.")

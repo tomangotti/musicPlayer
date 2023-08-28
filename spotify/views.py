@@ -151,5 +151,15 @@ class SkipSong(APIView):
     
 
 class SearchSong(APIView):
-    def get(self, request, format=None):
-        pass
+    def post(self, request, format=None):
+        request_data = request.data
+        song_name = request_data.get('song')
+        room_code = self.request.session.get('room_code')
+        room = Room.objects.filter(code=room_code)[0]
+
+        if self.request.session.session_key:
+            song_list = search_song(self.request.session.session_key, song_name, limit=10)
+            return Response({'song_list': song_list}, status=status.HTTP_200_OK)
+
+        
+        return Response({}, status=status.HTTP_403_FORBIDDEN)

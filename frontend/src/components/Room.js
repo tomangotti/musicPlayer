@@ -11,6 +11,7 @@ import {Grid,
         TextField,
         Divider} from '@material-ui/core';
 import MusicPlayer from './MusicPlayer';
+import Search from './Search';
 
 
 
@@ -212,32 +213,6 @@ export default function Room({ handleBackgroundImage }) {
         </Grid>)
     }
 
-    function renderQueForm() {
-        return(
-            <Grid container spacing={1} >
-                <Grid item xs={12} align="center">
-                    <Typography variant="h4" component="h4">
-                        Search a Song
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} align="center">
-                    <TextField 
-                        error={"error"} 
-                        label="Search" 
-                        placeholder="Enter a Song Title" 
-                        value={"roomCode"} 
-                        helperText={"errorMessage"}
-                        variant="outlined" 
-                        onChange={"handleTextFieldChange"} />
-                </Grid>
-                <Grid item xs={12} align="center">
-                    <Button variant="contained" color="primary"  >Search</Button>
-                </Grid>
-                
-                
-            </Grid>
-        )
-    }
 
     const handleShare = async () => {
         if (navigator.share) {
@@ -270,7 +245,7 @@ export default function Room({ handleBackgroundImage }) {
             <Grid container spacing={2} style={{
                                             margin: "10px"
             }}>
-                {guestCanAddToQue ? renderQueForm() : null}
+                {guestCanAddToQue ? <Search /> : null}
 
                 <Grid item xs={6} align='center'>
                     <Button color='secondary' variant='contained' onClick={leaveButtonPressed}>
