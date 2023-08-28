@@ -9,11 +9,13 @@ import {Grid,
     FormControlLabel,
     TextField,
     Divider} from '@material-ui/core';
+import SearchCard from "./SearchCard";
 
 export default function Search() {
     const [search, setSearch] = useState("");
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [searchResults, setSearchResults] = useState(null)
 
     function handleSearch(e) {
         setSearch(e.target.value)
@@ -31,7 +33,8 @@ export default function Search() {
             .then((res) => {
                 if(res.ok){
                     res.json().then((data) => {
-                        console.log(data)
+                        
+                        setSearchResults(data.song_list)
                     })
                 }else{
                     console.log('not ok')
@@ -39,7 +42,12 @@ export default function Search() {
             })
     }
 
-
+    function handleSearchResults(list) {
+        const listContainer = list.map((song) => {
+            return <SearchCard song={song} />
+        })
+        return listContainer
+    }
 
 
     return(
@@ -62,7 +70,7 @@ export default function Search() {
                 <Grid item xs={12} align="center">
                     <Button variant="contained" color="primary" onClick={sendSearch}>Search</Button>
                 </Grid>
-                
+                {searchResults ? handleSearchResults(searchResults) : null}
                 
             </Grid>
     )
