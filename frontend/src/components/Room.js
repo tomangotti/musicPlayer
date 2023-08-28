@@ -20,13 +20,15 @@ export default function Room({ handleBackgroundImage }) {
     
     const [votesToSkip, setVotesToSkip] = useState(2);
     const [guestCanPause, setGuestCanPause] = useState(false);
+    const [guestCanAddToQue, setGuestCanAddToQue] = useState(false);
     const [isHost, setIsHost] = useState(false);
     const [showSetting, setShowSetting] = useState(false);
     const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
-    const [song, setSong] = useState({})
+    const [song, setSong] = useState({});
 
     const [votesToSkipEdit, setVotesToSkipEdit] = useState(2);
     const [guestCanPauseEdit, setGuestCanPauseEdit] = useState(false);
+    const [guestCanAddToQueEdit, setGuestCanAddToQueEdit] = useState(false)
     
     const navigate = useNavigate();
     const { code } = useParams();
@@ -38,9 +40,11 @@ export default function Room({ handleBackgroundImage }) {
             .then((res) => {
                 if(res.ok){
                     res.json().then((data) => {
+                        console.log(data)
                         setVotesToSkip(data.votes_so_skip)
                         setGuestCanPause(data.guest_can_pause)
                         setIsHost(data.is_host)
+                        setGuestCanAddToQue(data.guest_can_add_to_que)
 
                         if(data.is_host) {
                             authenticateSpotify()
@@ -113,6 +117,7 @@ export default function Room({ handleBackgroundImage }) {
                 votes_so_skip: votesToSkipEdit,
                 guest_can_pause: guestCanPauseEdit,
                 code: code,
+                guest_can_add_to_que: guestCanAddToQueEdit
             })
         }
 
@@ -125,6 +130,7 @@ export default function Room({ handleBackgroundImage }) {
                         setShowSetting(!showSetting)
                         setGuestCanPause(data.guest_can_pause)
                         setVotesToSkip(data.votes_so_skip)
+                        setGuestCanAddToQue(data.guest_can_add_to_que)
                         alert("Room updated!")
                     })
                 }
@@ -138,6 +144,10 @@ export default function Room({ handleBackgroundImage }) {
 
     function handleGuestCanPauseChange(e) {
         setGuestCanPauseEdit(e.target.value === "true" ? true : false)
+    }
+
+    function handleGuestCanAddToQueChange(e) {
+        setGuestCanAddToQueEdit(e.target.value === "true" ? true : false)
     }
 
     function renderSetting() {
@@ -163,6 +173,18 @@ export default function Room({ handleBackgroundImage }) {
                     </RadioGroup>
                 </FormControl>
             </Grid>
+            <Grid item xs={12} align="center">
+                    <FormControl component="fieldset" >
+                        <FormHelperText>
+                                Guest Can Add to Que
+                        </FormHelperText>
+                        
+                        <RadioGroup row defaultValue={guestCanAddToQue.toString()} onChange={handleGuestCanAddToQueChange}>
+                            <FormControlLabel value="true" control={<Radio color="primary" />} label="Yes" labelPlacement="bottom"/>
+                            <FormControlLabel value="false" control={<Radio color="secondary" />} label="No" labelPlacement="bottom"/>
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
             <Grid item xs={12} align="center">
                 <FormControl>
                     <TextField required={true} type="number" onChange={handleVotesChange} defaultValue={votesToSkip} inputProps={
@@ -190,6 +212,33 @@ export default function Room({ handleBackgroundImage }) {
         </Grid>)
     }
 
+    function renderQueForm() {
+        return(
+            <Grid container spacing={1} >
+                <Grid item xs={12} align="center">
+                    <Typography variant="h4" component="h4">
+                        Search a Song
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <TextField 
+                        error={"error"} 
+                        label="Search" 
+                        placeholder="Enter a Song Title" 
+                        value={"roomCode"} 
+                        helperText={"errorMessage"}
+                        variant="outlined" 
+                        onChange={"handleTextFieldChange"} />
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <Button variant="contained" color="primary"  >Search</Button>
+                </Grid>
+                
+                
+            </Grid>
+        )
+    }
+
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -210,24 +259,36 @@ export default function Room({ handleBackgroundImage }) {
         <Grid container spacing={1} style={{
                                             backgroundColor: 'white',
                                             borderRadius: "5px"}}>
-            <Grid item xs={12} align='center'>
+            <Grid item xs={12} align='center' style={{margin: "10px"}}>
                 <Button color='primary' variant='contained' onClick={handleShare}>
                     Share Code: {code}
                 </Button>
             </Grid>
             
             {song ? <MusicPlayer song={song} /> : null}
-            
-            {isHost ? <Grid item xs={12} align='center'>
-                <Button color='primary' variant='contained' onClick={settingsButtonPressed}>
-                    Settings
-                </Button>
-            </Grid> : null }
-            <Grid item xs={12} align='center'>
-                <Button color='secondary' variant='contained' onClick={leaveButtonPressed}>
-                    Leave Room
-                </Button>
+
+            <Grid container spacing={2} style={{
+                                            margin: "10px"
+            }}>
+                {guestCanAddToQue ? renderQueForm() : null}
+
+                <Grid item xs={6} align='center'>
+                    <Button color='secondary' variant='contained' onClick={leaveButtonPressed}>
+                        Leave Room
+                    </Button>
+                </Grid>
+
+                {isHost ? <Grid item xs={6} align='center'>
+                    <Button color='primary' variant='contained' onClick={settingsButtonPressed}>
+                        Settings
+                    </Button>
+                </Grid> : null }
             </Grid>
+            
+
+            
+
+            
             
             {showSetting ? renderSetting() : null}
         </Grid>

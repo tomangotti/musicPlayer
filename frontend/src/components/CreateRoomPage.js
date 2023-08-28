@@ -29,6 +29,7 @@ export default function CreateRoomPage(){
         setGuestCanAddToQue(e.target.value === "true" ? true : false)
     }
 
+    
     function handleRoomButtonPressed() {
         const requestOptions = {
             method: "POST",
