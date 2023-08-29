@@ -44,9 +44,14 @@ export default function Search() {
 
     function handleSearchResults(list) {
         const listContainer = list.map((song) => {
-            return <SearchCard song={song} key={list.indexOf(song)}/>
+            return <SearchCard song={song} key={list.indexOf(song)} handleClearSearch={handleClearSearch}/>
         })
         return listContainer
+    }
+
+    function handleClearSearch() {
+        setSearchResults(null)
+        setSearch("")
     }
 
 

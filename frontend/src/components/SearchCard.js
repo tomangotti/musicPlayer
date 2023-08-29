@@ -3,7 +3,7 @@ import { Grid, Typography, Card, Button } from "@material-ui/core";
 
 
 
-export default function SearchCard({song}) {
+export default function SearchCard({song, handleClearSearch}) {
 
 
 
@@ -20,6 +20,7 @@ export default function SearchCard({song}) {
                 if(res.ok){
                     res.json().then((data) => {
                         console.log(data)
+                        handleClearSearch()
                     }
                     )
                 }
@@ -48,7 +49,7 @@ export default function SearchCard({song}) {
                 </Grid>
                 <Grid item align="center" xs={1}>
                     <Button color="secondary" onClick={handleAddToQue}>
-                        +
+                        ➕
                     </Button>
                 </Grid>
             </Grid>
