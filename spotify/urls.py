@@ -11,5 +11,6 @@ urlpatterns = [
     path('pause', PauseSong.as_view()),
     path('play', PlaySong.as_view()),
     path('skip', SkipSong.as_view()),
-    path('search', SearchSong.as_view())
+    path('search', SearchSong.as_view()),
+    path('addToQue', AddToQue.as_view())
 ]

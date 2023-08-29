@@ -101,7 +101,7 @@ def skip_song(session_id):
 
 
 
-def search_song(session_id, song_name, limit=10):
+def search_song(session_id, song_name, limit=5):
         tokens = get_user_tokens(session_id)
         url = "https://api.spotify.com/v1/search"
         headers = {
@@ -135,3 +135,29 @@ def search_song(session_id, song_name, limit=10):
     
         else:
             print("No songs found.")
+
+
+
+def addSongToQue(uri, session_id):
+    tokens = get_user_tokens(session_id)
+
+    # deviceUrl = 'https://api.spotify.com/v1/me/player/devices'
+    # headers = {
+    #     "Authorization": "Bearer " + tokens.access_token
+    # }
+    # response = get(deviceUrl, {}, headers=headers)
+
+    # data = response.json()
+    # deviceID = data["devices"][0]["id"]
+
+    url = 'https://api.spotify.com/v1/me/player/queue?uri=' + uri
+    print(url)
+    headers = {
+        "Authorization": "Bearer " + tokens.access_token
+    }
+    response = post(url, {}, headers=headers)
+    print(response)
+
+    
+    return response
+    
